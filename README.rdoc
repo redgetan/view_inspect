@@ -1,0 +1,31 @@
+= View Inspect
+
+View Inspect shows you the source location of a client or server rendered DOM element.
+
+== Demo
+
+
+
+== Installation
+
+  group :development do
+    gem "view_inspect"
+  end
+
+== Warning
+
+  Don't run this in production unless you don't mind people easily seeing how your code works.
+
+== Support
+
+Server Side:
+  works with plain html, erb, haml
+
+Client Side:
+  works with plain Javascript, and tested with Backbone, Ember
+
+== Copyright
+
+Copyright (c) 2014 Reginald Tan. See LICENSE.txt for
+further details.
+
