@@ -2,15 +2,19 @@ require 'view_inspect/erb'
 require 'view_inspect/haml'
 
 module ViewInspect
-  def enable
+  def self.enable
     return unless allow_view_source_location?
 
     ERB.enable
     Haml.enable
   end
 
-  def allow_view_source_location?
-    !Rails.env.production
+  def self.allow_view_source_location?
+    if defined?(Rails)
+      !Rails.env.production?
+    else
+      true
+    end
   end
 
 end

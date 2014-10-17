@@ -1,31 +1,34 @@
 module ViewInspect
   module ERB
-    ERB_PREFIX  = "<%"
-    ERB_POSTFIX = "%>"
-    ERB_PREFIX_STUB = "__erb__stub__start"
-    ERB_POSTFIX_STUB = "__erb__stub__end"
+    # from erubis 2.7.0
+    #DEFAULT_REGEX = /(<%(=+|-|\#|%)?(.*?)([-=])?%>([ \t]*\r?\n)?)/m
+
+    ERB_REGEX_EXCLUDE_ENDING_NEWLINE = /(<%(=+|-|\#|%)?(.*?)([-=])?%>([ \t]*)?)/m
+    ERB_STUB = "__erb_stub_placement___"
+
+    @erb_orig_list = []
 
     def self.enable
-      ActionView::Template.instance_eval do
+      ActionView::Template.class_eval do
+        alias_method :orig_source, :source
+
         def source
-          return super unless handler == :erb
-          ::ViewInspect::ERB.add_file_line_to_html_tags(super, identifier)
+          return orig_source unless handler.respond_to? :erb_implementation
+          ::ViewInspect::ERB.add_file_line_to_html_tags(orig_source, identifier)
         end
       end
     end
 
-    module_function :enable
+    def self.add_file_line_to_html_tags(source, filepath)
 
-    def add_file_line_to_html_tags(source, filepath)
-
-      source = replace_erb_tags_with_stub(source)
+      source = replace_erb_with_stub(source)
       source = add_file_line(source, filepath)
-      source = replace_stub_with_erb_tags(source)
+      source = replace_stub_with_erb(source)
 
       source
     end
 
-    def add_file_line(source, filepath)
+    def self.add_file_line(source, filepath)
       doc = Nokogiri::HTML(source)
 
       doc.traverse do |node|
@@ -35,17 +38,18 @@ module ViewInspect
         end
       end
 
-      CGI.unescape(doc.inner_html)
+      doc.inner_html
     end
 
-    def replace_erb_tags_with_stub(source)
-      source.gsub(ERB_PREFIX, ERB_PREFIX_STUB)
-            .gsub(ERB_POSTFIX, ERB_POSTFIX_STUB)
+    def self.replace_erb_with_stub(source)
+      @erb_orig_list = source.scan(ERB_REGEX_EXCLUDE_ENDING_NEWLINE).map { |a,b,c,d,e| a }
+      source.gsub(ERB_REGEX_EXCLUDE_ENDING_NEWLINE,ERB_STUB)
     end
 
-    def replace_stub_with_erb_tags(source)
-      source.gsub(ERB_PREFIX_STUB, ERB_PREFIX)
-            .gsub(ERB_POSTFIX_STUB, ERB_POSTFIX)
+    def self.replace_stub_with_erb(source)
+      source.gsub(ERB_STUB).with_index do |match, index|
+        @erb_orig_list[index]
+      end
     end
 
   end

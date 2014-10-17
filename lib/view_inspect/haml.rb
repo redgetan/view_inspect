@@ -3,7 +3,7 @@ module ViewInspect
     def self.enable
       return unless haml_installed?
 
-      Haml::Compiler.instance_eval do
+      ::Haml::Compiler.class_eval do
         alias_method :orig_compile, :compile
 
         def compile(node)
@@ -16,10 +16,8 @@ module ViewInspect
       end
     end
 
-    module_function :enable
-
-    def haml_installed?
-      defined? Haml::Compiler
+    def self.haml_installed?
+      defined? ::Haml::Compiler
     end
   end
 end
