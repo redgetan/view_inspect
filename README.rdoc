@@ -14,7 +14,7 @@ View Inspect shows you the source location of a client or server rendered DOM el
 
 == Warning
 
-  Don't run this in production unless you don't mind people easily seeing how your code works.
+  Don't run this on production. Preferably, you should only run this locally, not even on staging environments. View Inspect shows you the fullpath of your and back-end and front-end code. That is unless you dont mind people seeing things like /home/nandato/rails/app/releases/20131012158211/app/views/ganbatte/show.html.erb:2 in the HTML source
 
 == Support
 

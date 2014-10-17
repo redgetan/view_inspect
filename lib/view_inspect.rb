@@ -11,10 +11,14 @@ module ViewInspect
 
   def self.allow_view_source_location?
     if defined?(Rails)
-      !Rails.env.production?
+      config[:allow_view_source_location] || Rails.env.development?
     else
-      true
+      config[:allow_view_source_location] || false
     end
+  end
+
+  def self.config
+    @config ||= {}
   end
 
 end
