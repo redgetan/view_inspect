@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module ViewInspect
   module ERB
     # from erubis 2.7.0
@@ -29,10 +31,10 @@ module ViewInspect
     end
 
     def self.add_file_line(source, filepath)
-      doc = Nokogiri::HTML(source)
+      doc = ::Nokogiri::HTML(source)
 
       doc.traverse do |node|
-        if node.is_a?(Nokogiri::XML::Element)
+        if node.is_a?(::Nokogiri::XML::Element)
           file_line = [filepath, node.line].join(":")
           node.set_attribute "data-orig-file-line", file_line
         end

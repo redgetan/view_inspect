@@ -3,8 +3,6 @@ require 'view_inspect/haml'
 
 module ViewInspect
   def self.enable
-    return unless allow_view_source_location?
-
     ERB.enable
     Haml.enable
   end
