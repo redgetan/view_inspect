@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "view_inspect"
-  s.version = "0.1.0"
+  s.version = ViewInspect::VERSION
 
   s.required_rubygems_version = ">= 1.9.3"
 
