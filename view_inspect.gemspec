@@ -1,3 +1,5 @@
+require File.expand_path('../lib/view_inspect/version', __FILE__)
+
 Gem::Specification.new do |s|
   s.name = "view_inspect"
   s.version = ViewInspect::VERSION
