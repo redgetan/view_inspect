@@ -1,35 +1,31 @@
-= View Inspect
+View Inspect
+============
 
-View Inspect is a ruby library that shows you the source location of a client or server rendered DOM element. Works with ERB, Haml, Liquid, Mustache, Handlebars, Jade, eco.
+Shows you the source location of a server-side rendered DOM element. Works with Rails 3 and 4. Currently supports Haml, ERB.
 
-== Demo
+Demo
+----
 
-== Installation
-
-In your gemfile, include the gem in development group
+Installation
+----
 
     group :development do
       gem "view_inspect"
     end
 
-Anywhere in your code, specify where your view templates are located at. For example for Rails, you can put it in `config/initializers/view_inspect.rb`
+How it Works
+----
 
-    ViewInspect.config.template_paths = ["app/views"]
-    ViewInspect.config.allow_view_source_location = true
+For Haml, the compiler is monkey patched to include the source file and line information on each node. For ERB, we modify the original source by first stubbing out all erb expressions (basically anything wrapped in `<% %>`) so that it becomes a valid html document for nokogiri to parse and add file and line information to. Then after adding the source location metadata, we replace the stubs with the original erb expressions.
 
-== Usage
+Notice
+----
 
-  If you're using Rails, it'll automatically be enabled if you're in development. If your using Sinatra, call `ViewInspect.enable` anywhere in your code.
-
-== How it Works
-
-
-== Warning
-
-Don't run this on production. Preferably, you should only run this locally. View Inspect shows you the fullpath of your and back-end and front-end code. That is unless you dont mind people seeing things like /home/nandato/rails/app/releases/20131012158211/app/views/ganbatte/show.html.erb:2 in the HTML source
+By default, this is only enabled for development to avoid exposing source code details publicly.
 
 
-== Copyright
+Copyright
+----
 
 Copyright (c) 2014 Reginald Tan. See LICENSE.txt for
 further details.

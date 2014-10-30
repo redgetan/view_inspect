@@ -1,25 +1,15 @@
-require 'view_inspect/erb'
-require 'view_inspect/haml'
+require 'view_inspect/action_view_template'
 
 module ViewInspect
-  def self.enable
-    return unless ViewInspect.allow_view_source_location?
-    ERB.enable
-    Haml.enable
+  def self.enable(app = nil)
+    return unless allow_view_source_location?
+    ActionViewTemplate.augment_source
   end
 
   def self.allow_view_source_location?
-    if defined?(Rails)
-      config[:allow_view_source_location] || Rails.env.development?
-    else
-      config[:allow_view_source_location] || false
-    end
-  end
-
-  def self.config
-    @config ||= {}
+    ::Rails.env.development?
   end
 
 end
 
-require 'view_inspect/railtie' if defined?(Rails)
+require 'view_inspect/rails/railtie'

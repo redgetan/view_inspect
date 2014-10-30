@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors = ["Reginald Tan"]
   s.email = "redge.tan@gmail.com"
   s.summary = "Shows you the source location of a DOM element"
-  s.description = "Shows you the source location of a DOM element. Works with Erb and Haml templates and Javascript generated DOM"
+  s.description = "Shows you the source location of a DOM element. Works with Erb and Haml templates "
   s.files = `git ls-files`.split($/)
   s.homepage = "http://github.com/redgetan/view_inspect"
   s.licenses = ["MIT"]
