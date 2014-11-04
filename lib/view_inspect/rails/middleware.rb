@@ -1,6 +1,6 @@
 module ViewInspect
   class Middleware
-    HEAD_REGEXP = /(<head.*>)/
+    HEAD_REGEXP = /(<head.*?>)/
     HTML_CONTENT_TYPE_REGEXP = /text\/html|application\/xhtml\+xml/
 
     def initialize(app)
@@ -20,9 +20,18 @@ module ViewInspect
     end
 
     def insert_view_inspect_script(body)
+      body  = add_library_exclude_list(body)
       index = get_insert_position(body)
       body.insert(index, get_inline_script)
       body
+    end
+
+    def add_library_exclude_list(body)
+      index = body.index(HEAD_REGEXP)
+      old_head = $1
+      new_head = old_head.dup
+      new_head.insert("<head".length, " data-orig-exclude-list='#{ViewInspect.library_exclude_list.join(",")}' ")
+      body.sub(old_head,new_head)
     end
 
     def get_insert_position(body)

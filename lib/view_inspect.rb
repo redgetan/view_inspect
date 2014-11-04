@@ -18,8 +18,13 @@ module ViewInspect
     ::Rails.env.development?
   end
 
-  def self.enable_javascript_tracking!
+  def self.enable_javascript_tracking!(*library_exclude_list)
     @track_javascript = true
+    @library_exclude_list = library_exclude_list.flatten
+  end
+
+  def self.library_exclude_list
+    Array(@library_exclude_list)
   end
 
   def self.track_javascript?
