@@ -9,14 +9,10 @@ Demo
 
 Support
 ----
-| Server-side template    | Required Library       |
+| Template                | Required Library       |
 | ----------------------- | ---------------------- |
 | Haml                    | haml                   |
 | ERB                     | any erb implementation |
-
-
-| Client-side template    | Required Library       |
-| ----------------------- | ---------------------- |
 | Handlebars              | ember-rails            |
 | EJS                     | sprockets              |
 | Eco                     | sprockets              |
