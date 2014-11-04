@@ -15,7 +15,7 @@ Support
 | ERB                     | any erb implementation |
 
 
-| Server-side template    | Required Library       |
+| Client-side template    | Required Library       |
 | ----------------------- | ---------------------- |
 | Handlebars              | ember-rails            |
 | EJS                     | sprockets              |
