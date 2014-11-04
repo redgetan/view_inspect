@@ -4,7 +4,8 @@ module ViewInspect
   module Handlers
     class HTMLTemplate
 
-      STUB_PREFIX = "__template_expression_stub__"
+      STUB_PREFIX = "<!--template_expression_stub"
+      STUB_SUFFIX = "-->"
 
       def initialize
         @expression_stub_map = {}
@@ -16,11 +17,23 @@ module ViewInspect
 
       def add_file_line_to_html_tags(source, filepath)
 
+        doctype = preserve_doctype(source)
         source = replace_expression_with_stub(source)
         source = add_file_line(source, filepath)
         source = replace_stub_with_expression(source)
+        source = add_doctype_if_missing(source, doctype)
 
         source
+      end
+
+      def preserve_doctype(source)
+        first_line = source.lines.first
+        first_line =~ /DOCTYPE/ ? first_line : ""
+      end
+
+      def add_doctype_if_missing(source, doctype)
+        first_line = source.lines.first
+        first_line =~ /DOCTYPE/ ? source : source.insert(0,doctype)
       end
 
       def add_file_line(source, filepath)
@@ -37,12 +50,12 @@ module ViewInspect
           end
         end
 
-        doc.inner_html
+        CGI.unescapeHTML(doc.inner_html)
       end
 
       def replace_expression_with_stub(source)
         source.gsub(self.class.expression_regex).with_index do |match, index|
-          stub = "#{STUB_PREFIX}#{index}"
+          stub = "#{STUB_PREFIX}#{index}#{STUB_SUFFIX}"
           @expression_stub_map[stub] = match
           stub
         end
