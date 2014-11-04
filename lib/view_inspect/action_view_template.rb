@@ -4,16 +4,9 @@ require 'view_inspect/handlers/haml'
 module ViewInspect
   module ActionViewTemplate
 
-    def self.augment_source
-      handle_haml
-      handle_erb
-    end
-
-    def self.handle_haml
+    def self.handle_server_side_templates
       Handlers::Haml.augment_source
-    end
 
-    def self.handle_erb
       ::ActionView::Template.class_eval do
         alias_method :orig_initialize, :initialize
 
