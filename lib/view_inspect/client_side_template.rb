@@ -4,9 +4,9 @@ require 'view_inspect/handlers/eco'
 
 # Were monkey patching subclasses of Tilt::Template to add file:line information to the original source
 module ViewInspect
-  module Tilt
+  module ClientSideTemplate
 
-    def self.handle_client_side_templates
+    def self.handle
       class_handler_map.each do |klass, handler|
         klass.class_eval do
           alias_method :orig_initialize, :initialize

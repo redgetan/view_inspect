@@ -1,5 +1,5 @@
-require 'view_inspect/action_view_template'
-require 'view_inspect/tilt'
+require 'view_inspect/server_side_template'
+require 'view_inspect/client_side_template'
 require 'view_inspect/rails/middleware'
 
 module ViewInspect
@@ -7,8 +7,8 @@ module ViewInspect
   def self.init(app)
     return unless allow_view_source_location?
 
-    ActionViewTemplate.handle_server_side_templates
-    Tilt.handle_client_side_templates
+    ServerSideTemplate.handle
+    ClientSideTemplate.handle
 
     if track_javascript?
       app.middleware.use ViewInspect::Middleware

@@ -70,7 +70,7 @@ Also, depending which library you're using, you may need to specify external lib
 
 The reason why you may need to do this is because of the way we track the javascript file:line. We intercept the native DOM insertion methods such as appendChild, insertBefore, or replaceChild, look at the stacktrace, and then go through it to find the most recent caller which corresponds to our javascript code.
 
-Disable source location tracking
+Disable ViewInspect
 -----
 
   If you want to temporarily disable ViewInspect (ie. you want to profile your code and don't want the extra overhead), you can simply set ViewInspect.enable to false in config/environments/development.rb
@@ -80,7 +80,7 @@ Disable source location tracking
 Warning
 ----
 
-By default, this is only enabled for development to avoid exposing source code details publicly.
+By default, this is only enabled for development to avoid exposing source code filepath information publicly.
 
 
 Copyright

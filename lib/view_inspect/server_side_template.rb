@@ -2,9 +2,9 @@ require 'view_inspect/handlers/erb'
 require 'view_inspect/handlers/haml'
 
 module ViewInspect
-  module ActionViewTemplate
+  module ServerSideTemplate
 
-    def self.handle_server_side_templates
+    def self.handle
       Handlers::Haml.augment_source
 
       ::ActionView::Template.class_eval do
