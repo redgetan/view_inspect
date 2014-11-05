@@ -1,13 +1,14 @@
 View Inspect
 ============
 
-View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to sift through a large codebase to find the source location of a UI, the information can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries
+View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to sift through a large codebase to find the source location of a UI, the information can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries.
+
+Source location is added by first stubbing out all template specific expressions (i.e. `<% %>` for erb). Nokogiri parses the resulting valid HTML fragment and adds file:line information to each DOM node. After which stubs are replaced back with original template expressions.
 
 Screenshot
 ----
 
-![Screenshot](view_inspect_screenshot.png)
-
+[See screenshot](http://i.imgur.com/mD7sQ2m.png)
 
 Support
 ----
@@ -27,33 +28,23 @@ Installation
       gem "view_inspect"
     end
 
-Usage
-----
-
 ViewInspect is disabled by default. To enable it, add this line on config/environments/development.rb
 
     ViewInspect.enable = true
 
 Server-Side Templates
------
+----
 
 If you just want to track file:line origin of server-side templates such as ERB and Haml, you don't have to do anything else. It should just work after enabling it on development.rb
 
 Client-Side Templates
------
+----
 
-For client-side templates such as Handlebars, EJS, etc., before using it, you might need to clear the sprockets cache which is usually stored in `tmp/cache/assets`. You can also just clear the whole cache as an alternative via.
+For client-side templates to work, they have to live in separate files as opposed to being embedded in script tags. Also, you might need to clear the sprockets cache on initial use and cache directory is usually stored in `tmp/cache/assets`. Alternatively, you can just clear the whole cache via:
 
     rake tmp:clear
 
-How it works
------
-
-The basic idea on how this works is that we modify the template source before they are rendered or precompiled. To do that, we stub out all template specific expressions (i.e. `<% %>` for erb) from the original file so that it becomes a valid html document/fragment. Then, we parse the result with Nokogiri, after which we add file and line information to each DOM node. Once the source location metadata has been added as a data-attribute, the stubs are replaced with the original template expressions so that template handlers can compile/evaluate/render it.
-
-This doesnt work for Haml though since its not valid html. Instead, the compiler is monkey patched to include the source file and line information.
-
-Tracking Javascript DOM insertion
+Javascript DOM insertion
 ----
 
 If you use a lot of javascript/jquery to manually insert DOM elements, you can also enable javascript DOM insertion tracking by adding this line to `config/environments/development.rb`.
@@ -84,6 +75,7 @@ Warning
 ----
 
 By default, this is only enabled for development to avoid exposing source code filepath information publicly.
+
 
 
 Copyright
