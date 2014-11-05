@@ -4,8 +4,7 @@ module ViewInspect
   module Handlers
     class HTMLTemplate
 
-      STUB_PREFIX = "<!--template_expression_stub"
-      STUB_SUFFIX = "-->"
+      STUB_PREFIX = "__template_expression_stub__"
 
       def initialize
         @expression_stub_map = {}
@@ -16,32 +15,17 @@ module ViewInspect
       end
 
       def add_file_line_to_html_tags(source, filepath)
+        return source if html_layout?(source) # currently dont support html layout templates
 
-        doctype = preserve_doctype(source)
         source = replace_expression_with_stub(source)
         source = add_file_line(source, filepath)
         source = replace_stub_with_expression(source)
-        source = add_doctype_if_missing(source, doctype)
 
         source
       end
 
-      def preserve_doctype(source)
-        first_line = source.lines.first
-        first_line =~ /DOCTYPE/ ? first_line : ""
-      end
-
-      def add_doctype_if_missing(source, doctype)
-        first_line = source.lines.first
-        first_line =~ /DOCTYPE/ ? source : source.insert(0,doctype)
-      end
-
       def add_file_line(source, filepath)
-        doc = if source =~ /<\/html>/
-                ::Nokogiri::HTML(source)
-              else
-                ::Nokogiri::HTML.fragment(source)
-              end
+        doc = ::Nokogiri::HTML.fragment(source)
 
         doc.traverse do |node|
           if node.is_a?(::Nokogiri::XML::Element)
@@ -55,7 +39,8 @@ module ViewInspect
 
       def replace_expression_with_stub(source)
         source.gsub(self.class.expression_regex).with_index do |match, index|
-          stub = "#{STUB_PREFIX}#{index}#{STUB_SUFFIX}"
+          stub = "#{STUB_PREFIX}#{index}"
+          stub = preserve_linecount(stub, match)
           @expression_stub_map[stub] = match
           stub
         end
@@ -66,6 +51,17 @@ module ViewInspect
           result = result.sub(stub, expression)
         end
       end
+
+      private
+
+        def html_layout?(source)
+          source =~ /<\/html>/
+        end
+
+        def preserve_linecount(stub, match)
+          newline_padding_count = match.lines.count - 1
+          stub + "\n" * newline_padding_count
+        end
 
     end
   end

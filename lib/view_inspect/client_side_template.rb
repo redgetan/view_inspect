@@ -13,7 +13,7 @@ module ViewInspect
 
           def initialize(file=nil, line=1, options={}, &block)
             orig_initialize(file, line, options, &block)
-            handler = ViewInspect::Tilt.class_handler_map[self.class]
+            handler = ViewInspect::ClientSideTemplate.class_handler_map[self.class]
             @data = handler.new.add_file_line_to_html_tags(@data, file.to_s)
           end
         end
