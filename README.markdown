@@ -1,9 +1,9 @@
 View Inspect
 ============
 
-Shows you the source location of a server-side or client-side rendered DOM element. Works with Rails 3 and 4. Server side templates supported include Haml and Erb. Client-side templates support for Handlebars, EJS and Eco only works if the templates live in their own files as opposed to being embedded in javascript code and if the required libraries are installed.
+View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to sift through a large codebase to find the source location of a UI, the information can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries
 
-Demo
+Screenshot
 ----
 
 
@@ -25,16 +25,30 @@ Installation
       gem "view_inspect"
     end
 
+
 Usage
 ----
 
-If you're just using ERB and Haml, you don't have to do anything extra, it'll just work.
+ViewInspect is disabled by default. To enable it, add this line on config/environments/development.rb
+
+    ViewInspect.enable = true
+
+Server-Side Templates
+-----
+
+If you just want to track file:line origin of server-side templates such as ERB and Haml, you don't have to do anything else. It should just work after enabling it on development.rb
+
+Client-Side Templates
+-----
 
 For client-side templates such as Handlebars, EJS, etc., before using it, you might need to clear the sprockets cache which is usually stored in `tmp/cache/assets`. You can also just clear the whole cache as an alternative via.
 
     rake tmp:clear
 
-The basic idea on how this works for ERB, EJS, Eco, and Handlebars is that we stub out all template specific expressions (i.e. `<% %>` for erb) from the original source so that it becomes a valid html document. Nokogiri parses it and adds file and line information to each DOM node. Afterwards,the stubs are replaced with the original template expressions.
+How it works
+-----
+
+The basic idea on how this works is that we modify the template source before they are rendered or precompiled. To do that, we stub out all template specific expressions (i.e. `<% %>` for erb) from the original file so that it becomes a valid html document/fragment. Then, we parse the result with Nokogiri, after which we add file and line information to each DOM node. Once the source location metadata has been added as a data-attribute, the stubs are replaced with the original template expressions so that template handlers can compile/evaluate/render it.
 
 This doesnt work for Haml though since its not valid html. Instead, the compiler is monkey patched to include the source file and line information.
 
@@ -55,6 +69,13 @@ Also, depending which library you're using, you may need to specify external lib
 
 
 The reason why you may need to do this is because of the way we track the javascript file:line. We intercept the native DOM insertion methods such as appendChild, insertBefore, or replaceChild, look at the stacktrace, and then go through it to find the most recent caller which corresponds to our javascript code.
+
+Disable source location tracking
+-----
+
+  If you want to temporarily disable ViewInspect (ie. you want to profile your code and don't want the extra overhead), you can simply set ViewInspect.enable to false in config/environments/development.rb
+
+    ViewInspect.enable = false
 
 Warning
 ----
