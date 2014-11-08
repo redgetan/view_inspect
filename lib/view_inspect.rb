@@ -16,15 +16,11 @@ module ViewInspect
   end
 
   def self.allow_view_source_location?
-    enabled? && ::Rails.env.development?
+    !@disable && ::Rails.env.development?
   end
 
-  def self.enable=(bool)
-    @enable = bool
-  end
-
-  def self.enabled?
-    @enable
+  def self.disable=(bool)
+    @disable = bool
   end
 
   def self.enable_javascript_tracking!(*library_exclude_list)

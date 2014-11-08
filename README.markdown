@@ -28,9 +28,9 @@ Installation
       gem "view_inspect"
     end
 
-ViewInspect is disabled by default. To enable it, add this line on config/environments/development.rb
+ViewInspect is enabled by default. To disable it, add this line on config/environments/development.rb
 
-    ViewInspect.enable = true
+    ViewInspect.disable = true
 
 Server-Side Templates
 ----
@@ -61,14 +61,6 @@ Also, depending which library you're using, you may need to specify external lib
 
 
 The reason why you may need to do this is because of the way we track the javascript file:line. We intercept the native DOM insertion methods such as appendChild, insertBefore, or replaceChild, look at the stacktrace, and then go through it to find the most recent caller which corresponds to our javascript code.
-
-
-Disable ViewInspect
------
-
-  If you want to temporarily disable ViewInspect (ie. you want to profile your code and don't want the extra overhead), you can simply set ViewInspect.enable to false in config/environments/development.rb
-
-    ViewInspect.enable = false
 
 
 Warning
