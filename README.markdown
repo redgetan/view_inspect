@@ -1,7 +1,7 @@
 View Inspect
 ============
 
-View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to sift through a large codebase to find the source location of a UI, the information can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries.
+View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to filter through a large codebase, the source location can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries.
 
 Source location is added by first stubbing out all template specific expressions (i.e. `<% %>` for erb). Nokogiri parses the resulting valid HTML fragment and adds file:line information to each DOM node. After which stubs are replaced back with original template expressions.
 
