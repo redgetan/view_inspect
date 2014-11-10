@@ -15,6 +15,7 @@ Support
 | Template                | Required Library       |
 | ----------------------- | ---------------------- |
 | Haml                    | haml                   |
+| Slim                    | slim                   |
 | ERB                     | any erb implementation |
 | Handlebars              | ember-rails            |
 | EJS                     | sprockets              |
