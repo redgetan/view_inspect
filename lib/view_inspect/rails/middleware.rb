@@ -10,7 +10,7 @@ module ViewInspect
     def call(env)
       status, headers, response = @app.call(env)
 
-      if headers["Content-Type"] =~ HTML_CONTENT_TYPE_REGEXP && response.body.to_s =~ HEAD_REGEXP
+      if headers["Content-Type"] =~ HTML_CONTENT_TYPE_REGEXP && response.each.to_a.join("") =~ HEAD_REGEXP
         body = insert_view_inspect_script(response.body)
         headers["Content-Length"] = body.length.to_s
         response = [body]
