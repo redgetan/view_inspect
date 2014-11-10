@@ -5,10 +5,10 @@ View Inspect tells you which server-side or client-side template is responsible 
 
 Source location is added by first stubbing out all template specific expressions (i.e. `<% %>` for erb). Nokogiri parses the resulting valid HTML fragment and adds file:line information to each DOM node. After which stubs are replaced back with original template expressions.
 
-Screenshot
+Demo
 ----
-
-[See screenshot](http://i.imgur.com/mD7sQ2m.png)
+- [Diaspora:   Haml + Backbone.js](https://i.imgur.com/bhK6lap.png)
+- [Discourse:  ERB + Ember.js + Handlebars](http://i.imgur.com/mD7sQ2m.png)
 
 Support
 ----
@@ -29,7 +29,10 @@ Installation
       gem "view_inspect"
     end
 
-ViewInspect is enabled by default. To disable it, add this line on config/environments/development.rb
+Warning
+----
+
+By default, this is only enabled for development to avoid exposing source code filepath information publicly. If you want to disable it in development (i.e you want to benchmark/profile your app), add this line on config/environments/development.rb
 
     ViewInspect.disable = true
 
@@ -62,12 +65,6 @@ Also, depending which library you're using, you may need to specify external lib
 
 
 The reason why you may need to do this is because of the way we track the javascript file:line. We intercept the native DOM insertion methods such as appendChild, insertBefore, or replaceChild, look at the stacktrace, and then go through it to find the most recent caller which corresponds to our javascript code.
-
-
-Warning
-----
-
-By default, this is only enabled for development to avoid exposing source code filepath information publicly.
 
 
 
