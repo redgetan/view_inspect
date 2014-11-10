@@ -11,7 +11,7 @@ module ViewInspect
           def compile(node)
             if node.type == :tag
               file_line = [@options[:filename], node.line].join(":")
-              node.value.attributes.merge!(:data => { :orig_file_line => file_line })
+              node.value[:attributes].merge!(:data => { :orig_file_line => file_line })
             end
             orig_compile(node)
           end
