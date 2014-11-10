@@ -1,11 +1,13 @@
 require 'view_inspect/handlers/erb'
 require 'view_inspect/handlers/haml'
+require 'view_inspect/handlers/slim'
 
 module ViewInspect
   module ServerSideTemplate
 
     def self.handle
       Handlers::Haml.augment_source
+      Handlers::Slim.augment_source
 
       ::ActionView::Template.class_eval do
         alias_method :orig_initialize, :initialize
