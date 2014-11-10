@@ -17,7 +17,7 @@ Support
 | Haml                    | haml                   |
 | Slim                    | slim                   |
 | ERB                     | any erb implementation |
-| Handlebars              | ember-rails            |
+| Handlebars              | ember-rails, handlebars_assets          |
 | EJS                     | sprockets              |
 | Eco                     | sprockets              |
 
