@@ -24,6 +24,7 @@ module ViewInspect
     def self.class_handler_map
       hash = {}
       hash[::Ember::Handlebars::Template] = Handlers::Handlebars if defined? ::Ember::Handlebars::Template
+      hash[::HandlebarsAssets::TiltHandlebars] = Handlers::Handlebars if defined? ::HandlebarsAssets::TiltHandlebars
       hash[::Sprockets::EjsTemplate]      = Handlers::EJS        if defined? ::Sprockets::EjsTemplate
       hash[::Sprockets::EcoTemplate]      = Handlers::Eco        if defined? ::Sprockets::EcoTemplate
       hash
