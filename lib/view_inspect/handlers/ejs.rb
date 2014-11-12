@@ -1,11 +1,8 @@
-require 'view_inspect/handlers/html_template'
+require 'view_inspect/handlers/erb'
 
 module ViewInspect
   module Handlers
-    class EJS < HTMLTemplate
-      def self.expression_regex
-        /(<%(=+|-|\#|%)?(.*?)([-=])?%>([ \t]*)?)/m # same as erb
-      end
+    class EJS < ERB
     end
   end
 end

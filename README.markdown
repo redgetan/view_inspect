@@ -19,6 +19,7 @@ Support
 | ERB                     | any erb implementation |
 | Handlebars              | ember-rails, handlebars_assets          |
 | EJS                     | sprockets              |
+| JST                     | sprockets              |
 | Eco                     | sprockets              |
 
 

@@ -1,6 +1,7 @@
 require 'view_inspect/handlers/handlebars'
 require 'view_inspect/handlers/ejs'
 require 'view_inspect/handlers/eco'
+require 'view_inspect/handlers/jst'
 
 # Were monkey patching subclasses of Tilt::Template to add file:line information to the original source
 module ViewInspect
@@ -27,6 +28,7 @@ module ViewInspect
       hash[::HandlebarsAssets::TiltHandlebars] = Handlers::Handlebars if defined? ::HandlebarsAssets::TiltHandlebars
       hash[::Sprockets::EjsTemplate]      = Handlers::EJS        if defined? ::Sprockets::EjsTemplate
       hash[::Sprockets::EcoTemplate]      = Handlers::Eco        if defined? ::Sprockets::EcoTemplate
+      hash[::Sprockets::JstProcessor]     = Handlers::Jst        if defined? ::Sprockets::JstProcessor
       hash
     end
 
