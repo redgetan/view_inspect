@@ -57,26 +57,6 @@ An alternative solution is to avoid adding file:line information to DOM elements
 
     ViewInspect.show_html_syntax_error = false
 
-Javascript DOM insertion
-----
-
-If you use a lot of javascript/jquery to manually insert DOM elements, you can also enable javascript DOM insertion tracking by adding this line to `config/environments/development.rb`.
-
-    ViewInspect.enable_javascript_tracking!
-
-Then, you need to make sure that in your `config/environments/development.rb`, asset compression is turned off
-
-    config.assets.compress = false
-
-Also, depending which library you're using, you may need to specify external libraries you wish to prevent from showing up as a potential source location. This is because of the way we track the origin of javascript DOM insertion. In order to do that, pass in an array of library names you want to exclude to `enable_javascript_tracking!` . For example:
-
-    ViewInspect.enable_javascript_tracking!([:jquery, :backbone])
-
-
-The reason why you may need to do this is because of the way we track the javascript file:line. We intercept the native DOM insertion methods such as appendChild, insertBefore, or replaceChild, look at the stacktrace, and then go through it to find the most recent caller which corresponds to our javascript code.
-
-
-
 Copyright
 ----
 
