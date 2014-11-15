@@ -53,9 +53,8 @@ module ViewInspect
         end
 
         "<div id='view_inspect_error_message' style='border: solid 1px black; z-index: 9999; position: absolute; margin-left: 200px; width: 800px; padding: 20px; background-color: rgb(255, 229, 229); color: black;'>
-          <h3 style='font-size: 20px; line-height: 20px; font-weight: bold; background-color: lightgray; padding: 5px; display: inline-block; border: solid 1px black;'>Please correct HTML syntax errors</h3>
-          <h3 style='font-size: 16px; line-height: 16px; margin-bottom: 20px;'>#{filepath}</h3>
-          <ul style='list-style: none;'>#{errors_list}</ul>
+          <h3 style='font-size: 20px; line-height: 30px; font-weight: bold; background-color: lightgray; padding: 5px; display: inline-block; border: solid 1px black;'>Please correct HTML syntax errors in #{filepath}</h3>
+          <ul>#{errors_list}</ul>
         </div>"
       end
 
