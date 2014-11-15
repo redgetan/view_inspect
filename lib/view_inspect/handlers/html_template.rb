@@ -27,6 +27,8 @@ module ViewInspect
       def add_file_line(source, filepath)
         doc = ::Nokogiri::HTML.fragment(source)
 
+        return source if doc.errors.count > 0 && !ViewInspect.show_html_syntax_error?
+
         doc.traverse do |node|
           if node.is_a?(::Nokogiri::XML::Element)
             file_line = [filepath, node.line].join(":")
@@ -34,7 +36,27 @@ module ViewInspect
           end
         end
 
-        CGI.unescapeHTML(doc.inner_html)
+        source = CGI.unescapeHTML(doc.inner_html)
+
+        if doc.errors.length > 0
+          error_msg = build_html_syntax_error_msg(doc.errors, filepath)
+          "#{error_msg}#{source}"
+        else
+          source
+        end
+      end
+
+      def build_html_syntax_error_msg(errors, filepath)
+        errors_list = errors.inject("") do |result, error|
+          result << "<li>line #{error.line} - #{error.to_s}</li>"
+          result
+        end
+
+        "<div id='view_inspect_error_message' style='border: solid 1px black; z-index: 9999; position: absolute; margin-left: 200px; width: 800px; padding: 20px; background-color: rgb(255, 229, 229); color: black;'>
+          <h3 style='font-size: 20px; line-height: 20px; font-weight: bold; background-color: lightgray; padding: 5px; display: inline-block; border: solid 1px black;'>Please correct HTML syntax errors</h3>
+          <h3 style='font-size: 16px; line-height: 16px; margin-bottom: 20px;'>#{filepath}</h3>
+          <ul style='list-style: none;'>#{errors_list}</ul>
+        </div>"
       end
 
       def replace_expression_with_stub(source)

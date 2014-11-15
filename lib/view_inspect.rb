@@ -13,6 +13,8 @@ module ViewInspect
     if track_javascript?
       app.middleware.use ViewInspect::Middleware
     end
+
+    @show_html_syntax_error = true
   end
 
   def self.allow_view_source_location?
@@ -21,6 +23,14 @@ module ViewInspect
 
   def self.disable=(bool)
     @disable = bool
+  end
+
+  def self.show_html_syntax_error?
+    @show_html_syntax_error
+  end
+
+  def self.show_html_syntax_error=(bool)
+    @show_html_syntax_error = bool
   end
 
   def self.enable_javascript_tracking!(*library_exclude_list)
