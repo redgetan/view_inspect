@@ -3,8 +3,6 @@ View Inspect
 
 View Inspect tells you which server-side or client-side template is responsible for rendering a DOM element. Instead of using grep to filter through a large codebase, the source location can be found right away in its data-attribute when you open up web inspector. Works with Rails 3 and 4. See below for templates supported and their required libraries.
 
-Source location is added by first stubbing out all template specific expressions (i.e. `<% %>` for erb). Nokogiri parses the resulting valid HTML fragment and adds file:line information to each DOM node. After which stubs are replaced back with original template expressions.
-
 Demo
 ----
 - [Diaspora:   Haml + Backbone.js](https://i.imgur.com/bhK6lap.png)
@@ -36,6 +34,12 @@ Warning
 By default, this is only enabled for development to avoid exposing source code filepath information publicly. If you want to disable it in development (i.e you want to benchmark/profile your app), add this line on config/environments/development.rb
 
     ViewInspect.disable = true
+
+How it Works
+----
+
+Except for Haml and Slim where the compiler/parser is monkeypatched to include file:line information to each node, the rest of the templates are augment by preprocessing them with an HTML parser. Basically, we first stub out all template specific expressions (i.e. `<% %>` for erb) from a template file. Then, we use the Nokogiri HTML Parser to parse the resulting valid HTML fragment, and add file:line information to its child nodes. Once this is done, we bring back our original template expressions and remove the stubs. A little bit hacky but it works.
+
 
 Server-Side Templates
 ----
