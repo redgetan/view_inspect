@@ -55,11 +55,13 @@ For client-side templates to work, they have to live in separate files as oppose
 
 HTML Syntax Errors
 ----
-ViewInspect depends on Nokogiri to preprocess a template and add file:line information to each node. If there's any invalid HTML in your file, Nokogiri would delete it, and sometimes your HTML would look different in the browser because of this. To prevent that from happening, a Warning message would be shown to the user detailing where the HTML syntax errors are located so that the user can remove it. This is the default behavior.
+ViewInspect depends on Nokogiri to preprocess a template and add file:line information to each node. If there's any invalid HTML in your file, Nokogiri would delete it, and sometimes your HTML would look different in the browser because of this.
 
-An alternative solution is to avoid adding file:line information to DOM elements whenever Nokogiri encounters HTML syntax errors. Instead, it'll just show the original HTML template. If you prefer this behavior, you can set it by adding this line to config/environments/development.rb
+If such errors exist, view_inspect would simply return the original file template without the source location metadata to avoid malformed html.
 
-    ViewInspect.show_html_syntax_error = false
+An alternative solution is to show a warning message to the user detailing where the HTML syntax errors are located so that the user can remove it. To enable this, you can set it by adding this line to config/environments/development.rb
+
+    ViewInspect.show_html_syntax_error = true
 
 Copyright
 ----
