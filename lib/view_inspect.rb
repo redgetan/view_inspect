@@ -8,8 +8,6 @@ module ViewInspect
 
     ServerSideTemplate.handle
     ClientSideTemplate.handle
-
-    @show_html_syntax_error = false
   end
 
   def self.allow_view_source_location?
