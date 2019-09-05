@@ -28,6 +28,21 @@ Installation
       gem "view_inspect"
     end
 
+Configuration
+----
+    # config/environments/development.rb
+    ViewInspect.show_line_number = true # default value true
+
+    ViewInspect.max_path_depth = 3 
+    #   default value 0, 0 means show full path, when a positive number is given 
+    # and the positive number is less than absolute path depth of the view file, 
+    # then the in view, the path will be display in relative:
+    #   Example if a view path is /foo/bar/project/app/views/users/index.html.erb, 
+    # if you set max_path_depth to 3 then the output will be 
+    # views/users/index.html.erb, so you can easily copy 
+    # the search input of your editor by double click select it
+
+
 Warning
 ----
 
