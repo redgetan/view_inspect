@@ -31,8 +31,9 @@ module ViewInspect
 
         doc.traverse do |node|
           if node.is_a?(::Nokogiri::XML::Element)
-            file_line = [filepath, node.line].join(":")
-            node.set_attribute "data-orig-file-line", file_line
+            file_line = [filepath.split(File::SEPARATOR)[-ViewInspect.max_path_depth..-1].join(File::SEPARATOR)]
+            file_line << node.line if ViewInspect.show_line_number?
+            node.set_attribute "data-orig-file-line".freeze, file_line.join(':'.freeze)
           end
         end
 
